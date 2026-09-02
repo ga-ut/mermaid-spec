@@ -2,10 +2,57 @@
 import { stat } from "node:fs/promises";
 import { basename, extname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import packageMetadata from "../package.json";
 import { buildProject, compareContractCompatibility, compareContractGraphs, compileProject, createContractContext, emitTypeScript, extractMermaidDiagrams, loadTraceConfiguration, parseStateDiagram, testExamples, testProject, testProjectScenarios, testScenarios, validateStateMachine, validateTraceConfiguration, verifyProject } from "./index.js";
 
+const commands = ["check", "test", "ir", "emit", "build", "verify", "graph", "context", "impact", "compatibility", "migration"];
+
 function usage() {
-  console.error("Usage: mermaid-spec <check|test|ir|emit|build|verify|graph|context|impact|compatibility|migration> <path> [options]");
+  console.error(`Usage: mermaid-spec <${commands.join("|")}> <path> [options]`);
+  console.error("Run mermaid-spec --help for commands and options.");
+}
+
+function help() {
+  console.log(`mermaid-spec ${packageMetadata.version} — Mermaid contract CLI
+
+Usage: mermaid-spec <command> <path> [options]
+
+Project commands (a Markdown file or specification directory):
+  build           Generate contracts into --out (default: generated)
+  verify          Check generated artifacts and optional trace links
+  graph           Inspect contracts and dependencies
+  context         Show one contract and its related files; requires --id
+  impact          Find affected contracts and linked files; requires --baseline
+  compatibility   Check contract compatibility; requires --baseline
+  migration       Plan database changes without executing SQL; requires --baseline
+  test            Run declared examples and scenarios
+
+Single state-diagram commands (one Markdown file):
+  check           Validate the state diagram
+  ir              Print its intermediate representation
+  emit            Emit TypeScript
+
+Options:
+  --out <path>           Output directory for build/verify; file for ir/emit
+  --links <file>         Trace links for verify/graph/context/impact/compatibility/migration
+  --baseline <file>      Previously generated contract graph
+  --id <contract-id>     Contract selected by context
+  --include-files       Include linked file contents in context
+  --json                JSON output for graph/context/impact/compatibility/migration
+  --handlers <file>      Application scenario handlers for test
+  --name <name>          Name override for single state-diagram check/test/ir/emit
+  --allow-breaking       Allow compatibility to exit successfully on breaking changes
+  --allow-unsafe         Allow migration to exit successfully on unsafe changes; no unsafe SQL
+  -h, --help             Show this help without reading specifications
+  -v, --version          Print the installed version
+
+Examples:
+  mermaid-spec build ./specs --out ./generated
+  mermaid-spec verify ./specs --out ./generated --links ./mermaid-spec.links.json
+  mermaid-spec impact ./specs --baseline ./baseline/contract-graph.generated.json
+
+Requires Bun ${packageMetadata.engines.bun}. Node.js is not a supported runtime.
+Documentation: https://github.com/ga-ut/mermaid-spec`);
 }
 
 function option(args, key) {
@@ -100,7 +147,19 @@ async function traceFor(args, graph, additionalContractIds = [], options = {}) {
 
 async function main() {
   const [, , command, file, ...args] = Bun.argv;
-  if (!command || !file || !["check", "test", "ir", "emit", "build", "verify", "graph", "context", "impact", "compatibility", "migration"].includes(command)) {
+  if ((!command || ["--help", "-h"].includes(command)) && !file) {
+    help();
+    return 0;
+  }
+  if (["--version", "-v"].includes(command) && !file) {
+    console.log(packageMetadata.version);
+    return 0;
+  }
+  if (commands.includes(command) && [file, ...args].some((arg) => arg === "--help" || arg === "-h")) {
+    help();
+    return 0;
+  }
+  if (!file || !commands.includes(command)) {
     usage();
     return 2;
   }

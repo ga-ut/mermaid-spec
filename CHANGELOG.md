@@ -3,6 +3,25 @@
 All notable changes are documented here. The project follows
 [Semantic Versioning](https://semver.org/).
 
+## 1.1.0 - 2026-09-03
+
+CLI distribution through npm. Bun remains the required runtime.
+
+### Added
+
+- `--help` / `-h`, help on an empty invocation, and command help without
+  reading a specification.
+- `--version` / `-v` reporting the installed package version.
+- CLI-first instructions for `bunx`, global installation, a runnable first
+  specification, and optional version pinning for teams and CI.
+- Release packaging checks for installed CLI commands, package exports, and
+  accidentally included local artifacts.
+
+### Unchanged
+
+- Contract syntax, generated artifact shapes, and application runtime behavior.
+- Generated example manifests record the new compiler version.
+
 ## 1.0.0 - 2026-09-03
 
 First GA-UT source release.

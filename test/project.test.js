@@ -3,6 +3,7 @@ import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import packageMetadata from "../package.json";
 import { buildProject, compileProject, testProject, testProjectScenarios, verifyProject } from "../src/index.js";
 
 const productSpecs = fileURLToPath(new URL("../examples/product/specs", import.meta.url));
@@ -19,7 +20,7 @@ test("compiles a product directory into deterministic artifacts", async () => {
   expect(project.artifacts["contract-graph.generated.json"]).toBeTruthy();
   expect(JSON.parse(project.artifacts["mermaid-spec.manifest.json"]).compiler).toEqual({
     name: "mermaid-spec",
-    version: "1.0.0",
+    version: packageMetadata.version,
   });
   expect(project.graph.nodes.map((node) => node.id)).toContain("operation:connectOAuth");
   expect(testProject(project).every((result) => result.passed)).toBe(true);

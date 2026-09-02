@@ -1,6 +1,6 @@
 # Product readiness
 
-`mermaid-spec` 1.0 is a production-ready contract compiler and traceability
+`mermaid-spec` 1.x is a production-ready contract compiler and traceability
 harness for the bounded syntax it documents. It is not a general application
 generator or a complete source of truth for every concern in a production
 system.

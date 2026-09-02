@@ -2,11 +2,13 @@
 
 [![CI](https://github.com/ga-ut/mermaid-spec/actions/workflows/ci.yml/badge.svg)](https://github.com/ga-ut/mermaid-spec/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/ga-ut/mermaid-spec)](https://github.com/ga-ut/mermaid-spec/releases)
+[![npm](https://img.shields.io/npm/v/mermaid-spec)](https://www.npmjs.com/package/mermaid-spec)
 [![License](https://img.shields.io/github/license/ga-ut/mermaid-spec)](./LICENSE)
 
 Turn Mermaid diagrams into contracts that code and tests can follow.
 
-`mermaid-spec` compiles a strict Mermaid-compatible subset into TypeScript,
+`mermaid-spec` is a command-line tool for people and coding agents. It compiles
+a strict Mermaid-compatible subset into TypeScript,
 JSON Schema, PostgreSQL DDL, OpenAPI, validated HTTP routing, and executable
 state machines. It also records the links from each contract to the code,
 tests, UI consumers, and documentation that realize it.
@@ -26,6 +28,83 @@ flowchart LR
   Links --> Change[impact · compatibility · migration]
 ```
 
+## Run the CLI
+
+Install [Bun](https://bun.com/docs/installation) 1.3.14 or newer first.
+Bun is the runtime; npm is the distribution registry. Node.js is not a
+supported runtime, and you do not need the npm CLI to use this tool.
+
+Run it without adding a dependency to your project:
+
+```bash
+bunx mermaid-spec --help
+bunx mermaid-spec --version
+```
+
+[`bunx`](https://bun.com/docs/pm/bunx) downloads the CLI to a shared cache when
+it is not already installed locally. It does not add it to your `package.json`.
+
+For a command available across projects:
+
+```bash
+bun add --global mermaid-spec
+mermaid-spec --help
+```
+
+If the command is not found, run `bun pm bin -g` and add the printed directory
+to your shell's `PATH`, or use `bunx`.
+
+### First specification
+
+Save this as `task.md` in any working directory:
+
+````markdown
+```mermaid
+stateDiagram-v2
+  [*] --> Todo
+  Todo --> Done : complete
+  Done --> [*]
+
+  %% @test Todo --complete--> Done
+  %% @test Done --complete--> !invalid
+```
+````
+
+Then run:
+
+```bash
+bunx mermaid-spec check ./task.md
+bunx mermaid-spec test ./task.md
+bunx mermaid-spec build ./task.md --out ./generated
+bunx mermaid-spec verify ./task.md --out ./generated
+```
+
+You should see a valid state machine, two passing examples, and verified
+generated files. Change `complete` to `finish` without updating the examples:
+`test` fails, and `verify` detects that the specification and generated files
+no longer match. Update the examples and rebuild to accept the change.
+These examples validate declared transitions, not application behavior; use
+scenarios with application handlers for that.
+
+### Pin a version for a team or CI
+
+You can pin the CLI without changing project dependencies:
+
+```bash
+bunx mermaid-spec@1.1.0 build ./specs --out ./generated
+```
+
+Alternatively, keep it as a development tool in your lockfile:
+
+```bash
+bun add --dev --exact mermaid-spec@1.1.0
+bunx --no-install mermaid-spec build ./specs --out ./generated
+```
+
+This development dependency is optional for CLI use. Install it in the
+application only if your code imports `mermaid-spec`, `mermaid-spec/runtime`,
+or `mermaid-spec/http`.
+
 ## What v1 owns
 
 - Data contracts with separate `table`, `schema`, and reusable `value` roles;
@@ -44,20 +123,9 @@ database connections and migration execution, framework UI, deployment, and
 operations. The compiler makes those boundaries visible; it does not generate
 an application whose behavior was never specified.
 
-## Install
-
-Version 1 is available as a GitHub source release:
-
-```bash
-bun add --dev github:ga-ut/mermaid-spec#v1.0.0
-```
-
-Use `bunx mermaid-spec` in scripts. Bun 1.3.14 or newer is required; Node.js is
-not a supported runtime.
-
 ## Contract loop
 
-Keep Mermaid blocks in Markdown files under a specification directory:
+For a project with specifications, scenario handlers, and trace links, use:
 
 ```bash
 bunx mermaid-spec build ./specs --out ./generated
@@ -112,9 +180,13 @@ responsive browser UI built around the generated contracts. It includes:
 - invalid-input, access-denial, state-rejection, pagination, UI, migration, and
   recovery tests.
 
-Run it locally:
+To run the example, clone the source repository (the CLI alone does not
+create an application):
 
 ```bash
+git clone --branch v1.1.0 https://github.com/ga-ut/mermaid-spec.git
+cd mermaid-spec
+bun ci
 bun run example:full-stack:serve
 ```
 
@@ -151,7 +223,8 @@ committed and must not be edited by hand.
 
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) and
 [`docs/versioning.md`](./docs/versioning.md) before changing public syntax or
-generated output.
+generated output. Maintainers publish with the checklist in
+[`docs/releasing.md`](./docs/releasing.md).
 
 ## Relationship to Mermaid
 
