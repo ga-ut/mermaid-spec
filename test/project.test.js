@@ -19,7 +19,7 @@ test("compiles a product directory into deterministic artifacts", async () => {
   expect(project.artifacts["api.generated.js"]).toMatch(/export const schemas/);
   expect(project.artifacts["contract-graph.generated.json"]).toBeTruthy();
   expect(JSON.parse(project.artifacts["mermaid-spec.manifest.json"]).compiler).toEqual({
-    name: "mermaid-spec",
+    name: "@ga-ut/mermaid-spec",
     version: packageMetadata.version,
   });
   expect(project.graph.nodes.map((node) => node.id)).toContain("operation:connectOAuth");

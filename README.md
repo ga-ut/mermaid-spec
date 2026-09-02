@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/ga-ut/mermaid-spec/actions/workflows/ci.yml/badge.svg)](https://github.com/ga-ut/mermaid-spec/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/ga-ut/mermaid-spec)](https://github.com/ga-ut/mermaid-spec/releases)
-[![npm](https://img.shields.io/npm/v/mermaid-spec)](https://www.npmjs.com/package/mermaid-spec)
+[![npm](https://img.shields.io/npm/v/@ga-ut/mermaid-spec)](https://www.npmjs.com/package/@ga-ut/mermaid-spec)
 [![License](https://img.shields.io/github/license/ga-ut/mermaid-spec)](./LICENSE)
 
 Turn Mermaid diagrams into contracts that code and tests can follow.
@@ -37,8 +37,8 @@ supported runtime, and you do not need the npm CLI to use this tool.
 Run it without adding a dependency to your project:
 
 ```bash
-bunx mermaid-spec --help
-bunx mermaid-spec --version
+bunx @ga-ut/mermaid-spec --help
+bunx @ga-ut/mermaid-spec --version
 ```
 
 [`bunx`](https://bun.com/docs/pm/bunx) downloads the CLI to a shared cache when
@@ -47,7 +47,7 @@ it is not already installed locally. It does not add it to your `package.json`.
 For a command available across projects:
 
 ```bash
-bun add --global mermaid-spec
+bun add --global @ga-ut/mermaid-spec
 mermaid-spec --help
 ```
 
@@ -73,10 +73,10 @@ stateDiagram-v2
 Then run:
 
 ```bash
-bunx mermaid-spec check ./task.md
-bunx mermaid-spec test ./task.md
-bunx mermaid-spec build ./task.md --out ./generated
-bunx mermaid-spec verify ./task.md --out ./generated
+bunx @ga-ut/mermaid-spec check ./task.md
+bunx @ga-ut/mermaid-spec test ./task.md
+bunx @ga-ut/mermaid-spec build ./task.md --out ./generated
+bunx @ga-ut/mermaid-spec verify ./task.md --out ./generated
 ```
 
 You should see a valid state machine, two passing examples, and verified
@@ -91,19 +91,20 @@ scenarios with application handlers for that.
 You can pin the CLI without changing project dependencies:
 
 ```bash
-bunx mermaid-spec@1.1.0 build ./specs --out ./generated
+bunx @ga-ut/mermaid-spec@1.1.0 build ./specs --out ./generated
 ```
 
 Alternatively, keep it as a development tool in your lockfile:
 
 ```bash
-bun add --dev --exact mermaid-spec@1.1.0
-bunx --no-install mermaid-spec build ./specs --out ./generated
+bun add --dev --exact @ga-ut/mermaid-spec@1.1.0
+bunx --no-install @ga-ut/mermaid-spec build ./specs --out ./generated
 ```
 
 This development dependency is optional for CLI use. Install it in the
-application only if your code imports `mermaid-spec`, `mermaid-spec/runtime`,
-or `mermaid-spec/http`.
+application if it uses generated JavaScript or imports `@ga-ut/mermaid-spec`,
+`@ga-ut/mermaid-spec/runtime`, or `@ga-ut/mermaid-spec/http`.
+Generated JavaScript depends on the package's runtime exports.
 
 ## What v1 owns
 
@@ -128,23 +129,23 @@ an application whose behavior was never specified.
 For a project with specifications, scenario handlers, and trace links, use:
 
 ```bash
-bunx mermaid-spec build ./specs --out ./generated
-bunx mermaid-spec test ./specs --handlers ./scenario-handlers.js
-bunx mermaid-spec verify ./specs --out ./generated \
+bunx @ga-ut/mermaid-spec build ./specs --out ./generated
+bunx @ga-ut/mermaid-spec test ./specs --handlers ./scenario-handlers.js
+bunx @ga-ut/mermaid-spec verify ./specs --out ./generated \
   --links ./mermaid-spec.links.json
 ```
 
 Before accepting a spec change, inspect what it affects:
 
 ```bash
-bunx mermaid-spec impact ./specs \
+bunx @ga-ut/mermaid-spec impact ./specs \
   --baseline ./baseline/contract-graph.generated.json \
   --links ./mermaid-spec.links.json
 
-bunx mermaid-spec compatibility ./specs \
+bunx @ga-ut/mermaid-spec compatibility ./specs \
   --baseline ./baseline/contract-graph.generated.json
 
-bunx mermaid-spec migration ./specs \
+bunx @ga-ut/mermaid-spec migration ./specs \
   --baseline ./baseline/contract-graph.generated.json
 ```
 
@@ -157,7 +158,7 @@ dependents, and linked files so a person or coding agent receives bounded,
 explicit context:
 
 ```bash
-bunx mermaid-spec context ./specs \
+bunx @ga-ut/mermaid-spec context ./specs \
   --id operation:createTask \
   --links ./mermaid-spec.links.json \
   --include-files --json

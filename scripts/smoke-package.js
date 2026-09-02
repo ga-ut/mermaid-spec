@@ -46,13 +46,15 @@ try {
   const localArtifact = /(^|\/)(?:node_modules|dist|build|coverage|test-results|playwright-report)(\/|$)|\.(?:db|sqlite|sqlite3)(?:-(?:shm|wal))?$|\.(?:log|tgz|mp4|mov|webm)$/i;
   const prohibited = entries.find((entry) => !allowed.test(entry) || localArtifact.test(entry) || entry.split("/").some((part) => part.startsWith(".")));
   if (prohibited) throw new Error(`Packed archive contains prohibited artifact ${prohibited}`);
+  const packedMetadata = JSON.parse(await run(["tar", "-xOf", archive, "package/package.json"], temporary));
+  if (packedMetadata.name !== "@ga-ut/mermaid-spec") throw new Error("Package must be published under the GA-UT scope");
 
   await Bun.write(join(temporary, "package.json"), '{"private":true,"type":"module"}\n');
   await run(["bun", "add", "--dev", archive], temporary);
 
-  const installed = join(temporary, "node_modules", "mermaid-spec");
+  const installed = join(temporary, "node_modules", "@ga-ut", "mermaid-spec");
   const metadata = await Bun.file(join(installed, "package.json")).json();
-  const cli = ["bun", "x", "--no-install", "mermaid-spec"];
+  const cli = ["bun", "x", "--no-install", "@ga-ut/mermaid-spec"];
   const help = await run([...cli, "--help"], temporary);
   if (!help.includes("Usage: mermaid-spec <command> <path> [options]")) throw new Error("Installed CLI did not show help");
   const version = await run([...cli, "--version"], temporary);
@@ -66,8 +68,10 @@ try {
   await run([...cli, "build", example, "--out", "generated"], temporary);
   await run([...cli, "verify", example, "--out", "generated"], temporary);
 
-  await run(["bun", "--eval", "import { parseStateDiagram } from 'mermaid-spec'; if (parseStateDiagram('stateDiagram-v2\\n[*] --> Ready').initial !== 'Ready') throw new Error('Unexpected package import result');"], temporary);
-  await run(["bun", "--eval", "for (const name of ['mermaid-spec/runtime', 'mermaid-spec/http']) { const exports = await import(name); if (!Object.keys(exports).length) throw new Error('Empty export: ' + name); }"], temporary);
+  await run(["bun", "--eval", "import { parseStateDiagram } from '@ga-ut/mermaid-spec'; if (parseStateDiagram('stateDiagram-v2\\n[*] --> Ready').initial !== 'Ready') throw new Error('Unexpected package import result');"], temporary);
+  await run(["bun", "--eval", "for (const name of ['@ga-ut/mermaid-spec/runtime', '@ga-ut/mermaid-spec/http']) { const exports = await import(name); if (!Object.keys(exports).length) throw new Error('Empty export: ' + name); }"], temporary);
+  await run([...cli, "build", join(installed, "examples", "full-stack", "specs"), "--out", "generated-app"], temporary);
+  await run(["bun", "--eval", "import { createApiHandler } from './generated-app/api.generated.js'; import { transitionTaskLifecycle } from './generated-app/task-lifecycle.machine.generated.js'; if (typeof createApiHandler !== 'function' || typeof transitionTaskLifecycle !== 'function') throw new Error('Generated runtime imports failed');"], temporary);
 
   console.log(`Package ${metadata.name}@${metadata.version}: archive policy, CLI help/version/check/test/graph/build/verify, and all public exports passed`);
 } finally {

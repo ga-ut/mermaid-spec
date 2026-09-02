@@ -1,7 +1,7 @@
 {
   "version": 1,
   "compiler": {
-    "name": "mermaid-spec",
+    "name": "@ga-ut/mermaid-spec",
     "version": "1.1.0"
   },
   "sources": [
@@ -50,13 +50,13 @@
       "sha256": "0e9dfe38af37c31c365c405ed01e49c54b2568cdc410456bf08e54893b7941fc"
     },
     "api.generated.js": {
-      "sha256": "83ef8f29508f14ee9e40790cd042664b1a3058a4bbe726b755fa98b28c25da7b"
+      "sha256": "a14bc2439e0d2188c3e60566ecbaa0dcfc6bb06180e851525fcaf050097d2667"
     },
     "task-lifecycle.machine.generated.ts": {
       "sha256": "8280729bd5c98f89fc3c386429a4e154cac550d1ede00e0c714cc12ecf0eee50"
     },
     "task-lifecycle.machine.generated.js": {
-      "sha256": "093ff25cc7a843b6fdfc3451fd33c5e23531778700ab854cdd53bc9db517f6dc"
+      "sha256": "f9917ca288d046dacf422c0709d98102fe0f6cc1777c672d8b296aac06cf67f2"
     },
     "contract-graph.generated.json": {
       "sha256": "a7c29e56c54c627667d7422bd13b7706f514ae48842c60c58251cca940fa3ee9"

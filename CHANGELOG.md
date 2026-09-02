@@ -5,7 +5,8 @@ All notable changes are documented here. The project follows
 
 ## 1.1.0 - 2026-09-03
 
-CLI distribution through npm. Bun remains the required runtime.
+First npm release under the GA-UT organization: `@ga-ut/mermaid-spec`.
+Bun remains the required runtime, and the executable remains `mermaid-spec`.
 
 ### Added
 
@@ -21,6 +22,14 @@ CLI distribution through npm. Bun remains the required runtime.
 
 - Contract syntax, generated artifact shapes, and application runtime behavior.
 - Generated example manifests record the new compiler version.
+
+### Package migration
+
+- The briefly published unscoped `mermaid-spec@1.1.0` is superseded by
+  `@ga-ut/mermaid-spec@1.1.0` and carries a migration notice.
+- Generated JavaScript now imports `@ga-ut/mermaid-spec/runtime` and
+  `@ga-ut/mermaid-spec/http`. Install the scoped package and regenerate those
+  files when migrating from the GitHub source release or unscoped package.
 
 ## 1.0.0 - 2026-09-03
 

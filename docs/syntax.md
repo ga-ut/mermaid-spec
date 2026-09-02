@@ -191,7 +191,7 @@ Behavioral scenarios execute the real named guard and effect handlers. Context a
 Run them with an application-owned module. Its default export maps machine names to `guards` and `effects` objects:
 
 ```bash
-bunx mermaid-spec test ./specs --handlers ./scenario-handlers.js
+bunx @ga-ut/mermaid-spec test ./specs --handlers ./scenario-handlers.js
 ```
 
 An expected `!invalid` only accepts a rejected or absent transition. Missing handlers and application errors fail the scenario instead of being mistaken for an expected rejection. Each scenario is also a stable node in the generated contract graph.
@@ -201,9 +201,9 @@ The `direction TB|BT|LR|RL` statement and display declarations in the form `stat
 ## Project commands
 
 ```bash
-bunx mermaid-spec build ./specs --out ./generated
-bunx mermaid-spec test ./specs
-bunx mermaid-spec verify ./specs --out ./generated
+bunx @ga-ut/mermaid-spec build ./specs --out ./generated
+bunx @ga-ut/mermaid-spec test ./specs
+bunx @ga-ut/mermaid-spec verify ./specs --out ./generated
 ```
 
 `build` writes all deterministic artifacts and a content-addressed manifest. `test` runs every structural `%% @test` example and executable `%% @scenario` case. `verify` recompiles in memory and fails for missing, changed, or stale files in the output directory.

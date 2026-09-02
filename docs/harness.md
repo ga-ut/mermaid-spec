@@ -29,8 +29,8 @@ implementations, consumers, and tests that use it.
 Inspect the graph with:
 
 ```bash
-bunx mermaid-spec graph ./specs
-bunx mermaid-spec graph ./specs --json
+bunx @ga-ut/mermaid-spec graph ./specs
+bunx @ga-ut/mermaid-spec graph ./specs --json
 ```
 
 ## Explicit implementation and test links
@@ -67,7 +67,7 @@ Supported roles are `implementation`, `test`, `consumer`, and
 duplicate links, unsupported roles, or a contract that lacks a required role.
 
 ```bash
-bunx mermaid-spec verify ./specs --out ./generated \
+bunx @ga-ut/mermaid-spec verify ./specs --out ./generated \
   --links ./mermaid-spec.links.json
 ```
 
@@ -81,7 +81,7 @@ Retrieve the contract, its dependencies, dependents, and linked files for one
 work item:
 
 ```bash
-bunx mermaid-spec context ./specs \
+bunx @ga-ut/mermaid-spec context ./specs \
   --id operation:createTask \
   --links ./mermaid-spec.links.json
 ```
@@ -98,7 +98,7 @@ Compare the current specifications with a previously generated graph before
 overwriting the baseline:
 
 ```bash
-bunx mermaid-spec impact ./specs \
+bunx @ga-ut/mermaid-spec impact ./specs \
   --baseline ./generated/contract-graph.generated.json \
   --links ./mermaid-spec.links.json
 ```
@@ -124,11 +124,11 @@ should still run the full test suite.
 Use a committed graph from the last released contract as the baseline before rebuilding generated files:
 
 ```bash
-bunx mermaid-spec compatibility ./specs \
+bunx @ga-ut/mermaid-spec compatibility ./specs \
   --baseline ./baseline/contract-graph.generated.json \
   --links ./mermaid-spec.links.json
 
-bunx mermaid-spec migration ./specs \
+bunx @ga-ut/mermaid-spec migration ./specs \
   --baseline ./baseline/contract-graph.generated.json
 ```
 
@@ -139,6 +139,6 @@ bunx mermaid-spec migration ./specs \
 The JSON forms are stable inputs for CI annotations or an AI coding harness:
 
 ```bash
-bunx mermaid-spec compatibility ./specs --baseline ./baseline/contract-graph.generated.json --json
-bunx mermaid-spec migration ./specs --baseline ./baseline/contract-graph.generated.json --json
+bunx @ga-ut/mermaid-spec compatibility ./specs --baseline ./baseline/contract-graph.generated.json --json
+bunx @ga-ut/mermaid-spec migration ./specs --baseline ./baseline/contract-graph.generated.json --json
 ```

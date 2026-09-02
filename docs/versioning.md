@@ -41,9 +41,9 @@ application have their own compatibility boundary.
 Before replacing a released baseline, run:
 
 ```bash
-bunx mermaid-spec compatibility ./specs \
+bunx @ga-ut/mermaid-spec compatibility ./specs \
   --baseline ./baseline/contract-graph.generated.json
-bunx mermaid-spec migration ./specs \
+bunx @ga-ut/mermaid-spec migration ./specs \
   --baseline ./baseline/contract-graph.generated.json
 ```
 

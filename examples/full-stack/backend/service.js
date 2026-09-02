@@ -1,4 +1,4 @@
-import { InvalidTransitionError } from "mermaid-spec/runtime";
+import { InvalidTransitionError } from "@ga-ut/mermaid-spec/runtime";
 import { createApiHandler } from "../generated/api.generated.js";
 import { TaskLifecycle, transitionTaskLifecycleRecord } from "../generated/task-lifecycle.machine.generated.js";
 import { taskLifecycleHandlers } from "./lifecycle.js";

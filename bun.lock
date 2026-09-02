@@ -3,7 +3,7 @@
   "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "mermaid-spec",
+      "name": "@ga-ut/mermaid-spec",
       "devDependencies": {
         "@redocly/cli": "2.49.0",
         "typescript": "7.0.2",
