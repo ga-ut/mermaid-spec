@@ -1,0 +1,469 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "id": "effect:OAuthConnection:clearTokens",
+      "kind": "effect",
+      "name": "clearTokens",
+      "fingerprint": "481fcccbe76a1447235d9f26c8ecfc30b03cea0a89528f990d07d0d5b34abf49",
+      "details": {
+        "name": "clearTokens"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "effect:OAuthConnection:openAuthorization",
+      "kind": "effect",
+      "name": "openAuthorization",
+      "fingerprint": "e36691962df9129c6bb0737fb31a636850568ff0befcf6b1aa0ad556bb315e79",
+      "details": {
+        "name": "openAuthorization"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "effect:OAuthConnection:recordFailure",
+      "kind": "effect",
+      "name": "recordFailure",
+      "fingerprint": "670f9c34990a5d0647bea9b6fd89420208097d4359f0de2377944f712390ebec",
+      "details": {
+        "name": "recordFailure"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "effect:OAuthConnection:refreshTokens",
+      "kind": "effect",
+      "name": "refreshTokens",
+      "fingerprint": "da1f3dd7304944c3a4b4f7372860d108db2e30b80b4c07e3d0bedd34c70a9ee6",
+      "details": {
+        "name": "refreshTokens"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "effect:OAuthConnection:saveTokens",
+      "kind": "effect",
+      "name": "saveTokens",
+      "fingerprint": "b7279c211e12c3970990233a5352f6d4635a6cbf011a1bfb94355e337429eef5",
+      "details": {
+        "name": "saveTokens"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "guard:OAuthConnection:stateMatches",
+      "kind": "guard",
+      "name": "stateMatches",
+      "fingerprint": "b0398f1aa8dcea91059372052dc388dcc880d98473f976482b6fa736c77033d1",
+      "details": {
+        "name": "stateMatches"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "machine:OAuthConnection",
+      "kind": "machine",
+      "name": "OAuthConnection",
+      "fingerprint": "91a759e9536a2570cc16548f1b383a484bc3eb5ca4d041c56f07f0380e03a859",
+      "details": {
+        "initial": "Disconnected",
+        "states": [
+          "Authorizing",
+          "Connected",
+          "Disconnected",
+          "Failed",
+          "Refreshing"
+        ],
+        "terminal": []
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "model:OauthAccount",
+      "kind": "model",
+      "name": "OauthAccount",
+      "fingerprint": "550e2ae7cd5962a460dde2d0e2cc8a88311985f56bc1e00a275cfe2103190ad5",
+      "details": {
+        "entity": {
+          "name": "OAUTH_ACCOUNT",
+          "role": "table",
+          "attributes": [
+            {
+              "type": "uuid",
+              "name": "id",
+              "keys": [
+                "PK"
+              ]
+            },
+            {
+              "type": "uuid",
+              "name": "userId",
+              "keys": [
+                "FK"
+              ]
+            },
+            {
+              "type": "string",
+              "name": "provider",
+              "keys": []
+            },
+            {
+              "type": "string",
+              "name": "accessToken",
+              "keys": []
+            },
+            {
+              "type": "string",
+              "name": "refreshToken",
+              "keys": []
+            },
+            {
+              "type": "datetime",
+              "name": "expiresAt",
+              "keys": []
+            }
+          ]
+        },
+        "relationships": [
+          {
+            "from": "USER",
+            "fromCardinality": "||",
+            "toCardinality": "o{",
+            "to": "OAUTH_ACCOUNT",
+            "label": "owns"
+          }
+        ]
+      },
+      "source": {
+        "file": "domain.md"
+      }
+    },
+    {
+      "id": "model:OauthCallback",
+      "kind": "model",
+      "name": "OauthCallback",
+      "fingerprint": "b80e82ea074f20a85495ae5f5ef1b62a9520d640fa894b652fc5518b9e95dbe5",
+      "details": {
+        "entity": {
+          "name": "OAUTH_CALLBACK",
+          "role": "table",
+          "attributes": [
+            {
+              "type": "string",
+              "name": "code",
+              "keys": []
+            },
+            {
+              "type": "string",
+              "name": "state",
+              "keys": []
+            }
+          ]
+        },
+        "relationships": []
+      },
+      "source": {
+        "file": "domain.md"
+      }
+    },
+    {
+      "id": "model:User",
+      "kind": "model",
+      "name": "User",
+      "fingerprint": "a4927845d049bf072858dff7dca0218d8048306cd2ab88648a2efa867f010d7e",
+      "details": {
+        "entity": {
+          "name": "USER",
+          "role": "table",
+          "attributes": [
+            {
+              "type": "uuid",
+              "name": "id",
+              "keys": [
+                "PK"
+              ]
+            },
+            {
+              "type": "email",
+              "name": "email",
+              "keys": [
+                "UK"
+              ]
+            },
+            {
+              "type": "datetime",
+              "name": "createdAt",
+              "keys": []
+            }
+          ]
+        },
+        "relationships": [
+          {
+            "from": "USER",
+            "fromCardinality": "||",
+            "toCardinality": "o{",
+            "to": "OAUTH_ACCOUNT",
+            "label": "owns"
+          }
+        ]
+      },
+      "source": {
+        "file": "domain.md"
+      }
+    },
+    {
+      "id": "operation:completeOAuth",
+      "kind": "operation",
+      "name": "completeOAuth",
+      "fingerprint": "01c10956975fe68bb46d49b669c5006fa1148804662501815f1b982f3b3c4237",
+      "details": {
+        "client": "Client",
+        "server": "API",
+        "method": "POST",
+        "path": "/oauth/callback",
+        "operationId": "completeOAuth",
+        "requestModel": "OauthCallback",
+        "responses": [
+          {
+            "status": "200",
+            "model": "OauthAccount"
+          }
+        ],
+        "parameters": []
+      },
+      "source": {
+        "file": "api.md"
+      }
+    },
+    {
+      "id": "operation:connectOAuth",
+      "kind": "operation",
+      "name": "connectOAuth",
+      "fingerprint": "0add6ce2c7d428903444225150d7673a82b7f0750e5a3148bcfb4929409b6b2f",
+      "details": {
+        "client": "Client",
+        "server": "API",
+        "method": "POST",
+        "path": "/oauth/connect",
+        "operationId": "connectOAuth",
+        "responses": [
+          {
+            "status": "302"
+          }
+        ],
+        "parameters": []
+      },
+      "source": {
+        "file": "api.md"
+      }
+    },
+    {
+      "id": "transition:OAuthConnection:Authorizing:callback",
+      "kind": "transition",
+      "name": "Authorizing --callback--> Connected",
+      "fingerprint": "7f26211dafb4268538c1cdefe1dc68d8543c6900352b187a4dbdd876c71888dc",
+      "details": {
+        "from": "Authorizing",
+        "event": "callback",
+        "to": "Connected",
+        "guard": "stateMatches",
+        "effect": "saveTokens"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "transition:OAuthConnection:Authorizing:reject",
+      "kind": "transition",
+      "name": "Authorizing --reject--> Failed",
+      "fingerprint": "a6d23410c54ec5d5111c4b2dbf733cb224f18a582123722f6c1a690cbfe1dae2",
+      "details": {
+        "from": "Authorizing",
+        "event": "reject",
+        "to": "Failed",
+        "effect": "recordFailure"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "transition:OAuthConnection:Connected:expire",
+      "kind": "transition",
+      "name": "Connected --expire--> Refreshing",
+      "fingerprint": "a8e611dd62699150a8a384d2ad81eaa0ae03b2689741ab5233ed17cdc870e45a",
+      "details": {
+        "from": "Connected",
+        "event": "expire",
+        "to": "Refreshing",
+        "effect": "refreshTokens"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "transition:OAuthConnection:Disconnected:connect",
+      "kind": "transition",
+      "name": "Disconnected --connect--> Authorizing",
+      "fingerprint": "1eec1f0a1ede68c5f1a106079cc19faf6cb5b87669b8ce8e817b6eafe3123219",
+      "details": {
+        "from": "Disconnected",
+        "event": "connect",
+        "to": "Authorizing",
+        "effect": "openAuthorization"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "transition:OAuthConnection:Failed:retry",
+      "kind": "transition",
+      "name": "Failed --retry--> Authorizing",
+      "fingerprint": "c4e26abb01d6c2be2d40cc7d28fbe6e41117d5781c1d07e79234035afca6aa4a",
+      "details": {
+        "from": "Failed",
+        "event": "retry",
+        "to": "Authorizing",
+        "effect": "openAuthorization"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "transition:OAuthConnection:Refreshing:refreshed",
+      "kind": "transition",
+      "name": "Refreshing --refreshed--> Connected",
+      "fingerprint": "1034995f44e0616b8104e07c615f246341ecea4b478b701c19021179038162c1",
+      "details": {
+        "from": "Refreshing",
+        "event": "refreshed",
+        "to": "Connected",
+        "effect": "saveTokens"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    },
+    {
+      "id": "transition:OAuthConnection:Refreshing:revoke",
+      "kind": "transition",
+      "name": "Refreshing --revoke--> Disconnected",
+      "fingerprint": "e88093e3ba013a1170a9db36d4aaa4280aef284362bbd35588c4e12b733430d6",
+      "details": {
+        "from": "Refreshing",
+        "event": "revoke",
+        "to": "Disconnected",
+        "effect": "clearTokens"
+      },
+      "source": {
+        "file": "oauth.md"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "machine:OAuthConnection",
+      "to": "transition:OAuthConnection:Authorizing:callback",
+      "relation": "transition"
+    },
+    {
+      "from": "machine:OAuthConnection",
+      "to": "transition:OAuthConnection:Authorizing:reject",
+      "relation": "transition"
+    },
+    {
+      "from": "machine:OAuthConnection",
+      "to": "transition:OAuthConnection:Connected:expire",
+      "relation": "transition"
+    },
+    {
+      "from": "machine:OAuthConnection",
+      "to": "transition:OAuthConnection:Disconnected:connect",
+      "relation": "transition"
+    },
+    {
+      "from": "machine:OAuthConnection",
+      "to": "transition:OAuthConnection:Failed:retry",
+      "relation": "transition"
+    },
+    {
+      "from": "machine:OAuthConnection",
+      "to": "transition:OAuthConnection:Refreshing:refreshed",
+      "relation": "transition"
+    },
+    {
+      "from": "machine:OAuthConnection",
+      "to": "transition:OAuthConnection:Refreshing:revoke",
+      "relation": "transition"
+    },
+    {
+      "from": "operation:completeOAuth",
+      "to": "model:OauthAccount",
+      "relation": "response:200"
+    },
+    {
+      "from": "operation:completeOAuth",
+      "to": "model:OauthCallback",
+      "relation": "request"
+    },
+    {
+      "from": "transition:OAuthConnection:Authorizing:callback",
+      "to": "effect:OAuthConnection:saveTokens",
+      "relation": "effect"
+    },
+    {
+      "from": "transition:OAuthConnection:Authorizing:callback",
+      "to": "guard:OAuthConnection:stateMatches",
+      "relation": "guard"
+    },
+    {
+      "from": "transition:OAuthConnection:Authorizing:reject",
+      "to": "effect:OAuthConnection:recordFailure",
+      "relation": "effect"
+    },
+    {
+      "from": "transition:OAuthConnection:Connected:expire",
+      "to": "effect:OAuthConnection:refreshTokens",
+      "relation": "effect"
+    },
+    {
+      "from": "transition:OAuthConnection:Disconnected:connect",
+      "to": "effect:OAuthConnection:openAuthorization",
+      "relation": "effect"
+    },
+    {
+      "from": "transition:OAuthConnection:Failed:retry",
+      "to": "effect:OAuthConnection:openAuthorization",
+      "relation": "effect"
+    },
+    {
+      "from": "transition:OAuthConnection:Refreshing:refreshed",
+      "to": "effect:OAuthConnection:saveTokens",
+      "relation": "effect"
+    },
+    {
+      "from": "transition:OAuthConnection:Refreshing:revoke",
+      "to": "effect:OAuthConnection:clearTokens",
+      "relation": "effect"
+    }
+  ]
+}

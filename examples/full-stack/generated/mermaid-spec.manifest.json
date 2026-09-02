@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "compiler": {
+    "name": "mermaid-spec",
+    "version": "1.0.0"
+  },
+  "sources": [
+    {
+      "file": "api.md",
+      "sha256": "3a6dbbdeaac69c7fb854e262231b294aee5ba3b63d3e6687271c09483813b69c"
+    },
+    {
+      "file": "domain.md",
+      "sha256": "533e20511cd9bbaaf05e9744b4c0c47bac60c0d482f234fa2b08cb47d728e7aa"
+    },
+    {
+      "file": "lifecycle.md",
+      "sha256": "5b40a63e8a86e3d8c92ba48a3201fc059ea4884dc6c3e1eb157cb091dd834cb0"
+    }
+  ],
+  "models": [
+    "TASK",
+    "CREATE_TASK_REQUEST",
+    "TASK_EVENT_REQUEST",
+    "TASK_LIST",
+    "API_ERROR"
+  ],
+  "machines": [
+    "TaskLifecycle"
+  ],
+  "operations": [
+    "listTasks",
+    "createTask",
+    "transitionTask"
+  ],
+  "artifacts": {
+    "models.generated.ts": {
+      "sha256": "26eaf36ab5d1da684c7f32983f9d5d9d6169bad94595397bc68b34be57c480b8"
+    },
+    "models.schema.json": {
+      "sha256": "9123dad7f3c360bcddc5f1b1ece4520ce512427994c296546d9ed4a592e863ef"
+    },
+    "schema.generated.sql": {
+      "sha256": "eb461b36f5135782406cc2ad18bcba8fc878d7d8ca9359044e725a978bd3e418"
+    },
+    "openapi.generated.json": {
+      "sha256": "ebf0a22cf07e2f17feb334f3becac4d2af5ce9408cb775fe4a15185d6a9e188c"
+    },
+    "api.generated.ts": {
+      "sha256": "0e9dfe38af37c31c365c405ed01e49c54b2568cdc410456bf08e54893b7941fc"
+    },
+    "api.generated.js": {
+      "sha256": "83ef8f29508f14ee9e40790cd042664b1a3058a4bbe726b755fa98b28c25da7b"
+    },
+    "task-lifecycle.machine.generated.ts": {
+      "sha256": "8280729bd5c98f89fc3c386429a4e154cac550d1ede00e0c714cc12ecf0eee50"
+    },
+    "task-lifecycle.machine.generated.js": {
+      "sha256": "093ff25cc7a843b6fdfc3451fd33c5e23531778700ab854cdd53bc9db517f6dc"
+    },
+    "contract-graph.generated.json": {
+      "sha256": "a7c29e56c54c627667d7422bd13b7706f514ae48842c60c58251cca940fa3ee9"
+    }
+  }
+}

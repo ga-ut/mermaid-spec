@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "compiler": {
+    "name": "mermaid-spec",
+    "version": "1.0.0"
+  },
+  "sources": [
+    {
+      "file": "api.md",
+      "sha256": "1745468a7a79d5811910bc077c062e725b5496047dd024f1fdf49b5091193a2d"
+    },
+    {
+      "file": "domain.md",
+      "sha256": "a8c7d0e4183b81cf469bfb03f71bda03989f27b2701bc95ac7c55af5c56a41cb"
+    },
+    {
+      "file": "oauth.md",
+      "sha256": "c8de8daa74afe60230ef33bbfbcd3073f6c3f04450326f5b7fbed1fc454cb518"
+    }
+  ],
+  "models": [
+    "USER",
+    "OAUTH_ACCOUNT",
+    "OAUTH_CALLBACK"
+  ],
+  "machines": [
+    "OAuthConnection"
+  ],
+  "operations": [
+    "connectOAuth",
+    "completeOAuth"
+  ],
+  "artifacts": {
+    "models.generated.ts": {
+      "sha256": "a59c72e9f657cf046e30dce4496d364014649d42198efe921d7f8219932fb644"
+    },
+    "models.schema.json": {
+      "sha256": "681fc27e7ed309885731944a0f6d035a79fee5049f03301cb06921dd07ba0c89"
+    },
+    "schema.generated.sql": {
+      "sha256": "f5fbeccba60faf0407de225ee15c18ba36173980b926ba987845a2979ba51036"
+    },
+    "openapi.generated.json": {
+      "sha256": "172f5f993bc715b7bafeddf886d9e49a48c1f3ae8686b0acda8f9c8a302abfa8"
+    },
+    "api.generated.ts": {
+      "sha256": "dff3861bc46e7b10e35cad7ca6f1ef613c411f4d364db299d0c67da599a532a0"
+    },
+    "api.generated.js": {
+      "sha256": "9de8af74bd08b828caa307b9aa3afe586213a2262461d0ab0deb6da139b516cf"
+    },
+    "oauth-connection.machine.generated.ts": {
+      "sha256": "651993de8c809471794fb9b4d5734bbd578c7e818d59b131e0610e8e5cf2f79e"
+    },
+    "oauth-connection.machine.generated.js": {
+      "sha256": "8c58ad4073012ffec77ce8fc1e20163f0e02431a69d5a91a38865de33d0dc6e9"
+    },
+    "contract-graph.generated.json": {
+      "sha256": "9980eb0a71ab695b64442c8c5a70e4e42b5e456f9f2e1bbb121ec2b52cd7dc09"
+    }
+  }
+}

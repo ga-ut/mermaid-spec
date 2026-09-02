@@ -1,0 +1,620 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "id": "effect:IssueLifecycle:assignOwner",
+      "kind": "effect",
+      "name": "assignOwner",
+      "fingerprint": "d7bbf92f52aa6f5e42b5af8e0ea57c8292dcc82f32542fa3a08701c876c75a8a",
+      "details": {
+        "name": "assignOwner"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "effect:IssueLifecycle:notifyAssignee",
+      "kind": "effect",
+      "name": "notifyAssignee",
+      "fingerprint": "1c9d4a6f6cb871ad79940d9106b517b37d7f2a61acdce7abc1ec28b83358c0b6",
+      "details": {
+        "name": "notifyAssignee"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "effect:IssueLifecycle:notifyReporter",
+      "kind": "effect",
+      "name": "notifyReporter",
+      "fingerprint": "d6e67357ddeb96b4fa3076a023d8d5138c7125303d993b9e12d494a17872b021",
+      "details": {
+        "name": "notifyReporter"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "guard:IssueLifecycle:resolutionProvided",
+      "kind": "guard",
+      "name": "resolutionProvided",
+      "fingerprint": "10af558b4cfd474b60e3692f51b46d54ca12b15e339808071e7dacabd992f614",
+      "details": {
+        "name": "resolutionProvided"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "machine:IssueLifecycle",
+      "kind": "machine",
+      "name": "IssueLifecycle",
+      "fingerprint": "26a245f83a3832f65294ad6d66edba260068412f15d1216197367a9f0e8177f5",
+      "details": {
+        "initial": "Backlog",
+        "states": [
+          "Backlog",
+          "InProgress",
+          "Resolved"
+        ],
+        "terminal": [],
+        "binding": {
+          "model": "ISSUE",
+          "field": "status"
+        }
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "model:Comment",
+      "kind": "model",
+      "name": "Comment",
+      "fingerprint": "66fa304f47e7d04370f1406a05b8f84c62cca55acb8e2f09a43888d728dc5cc6",
+      "details": {
+        "entity": {
+          "name": "COMMENT",
+          "role": "table",
+          "attributes": [
+            {
+              "type": "uuid",
+              "name": "id",
+              "keys": [
+                "PK"
+              ]
+            },
+            {
+              "type": "uuid",
+              "name": "issueId",
+              "keys": [
+                "FK"
+              ]
+            },
+            {
+              "type": "uuid",
+              "name": "userId",
+              "keys": [
+                "FK"
+              ]
+            },
+            {
+              "type": "text",
+              "name": "body",
+              "keys": []
+            },
+            {
+              "type": "datetime",
+              "name": "createdAt",
+              "keys": []
+            }
+          ]
+        },
+        "relationships": [
+          {
+            "from": "ISSUE",
+            "fromCardinality": "||",
+            "toCardinality": "o{",
+            "to": "COMMENT",
+            "label": "contains"
+          },
+          {
+            "from": "USER",
+            "fromCardinality": "||",
+            "toCardinality": "o{",
+            "to": "COMMENT",
+            "label": "writes"
+          }
+        ]
+      },
+      "source": {
+        "file": "domain.md"
+      }
+    },
+    {
+      "id": "model:Issue",
+      "kind": "model",
+      "name": "Issue",
+      "fingerprint": "c863c7de391a81d1a903a0e5fb31e3e2a2e1a9f6e95534ce4c917ffb026cb444",
+      "details": {
+        "entity": {
+          "name": "ISSUE",
+          "role": "table",
+          "attributes": [
+            {
+              "type": "uuid",
+              "name": "id",
+              "keys": [
+                "PK"
+              ]
+            },
+            {
+              "type": "uuid",
+              "name": "userId",
+              "keys": [
+                "FK"
+              ]
+            },
+            {
+              "type": "string",
+              "name": "title",
+              "keys": []
+            },
+            {
+              "type": "text",
+              "name": "description",
+              "keys": []
+            },
+            {
+              "type": "string",
+              "name": "status",
+              "keys": [],
+              "enum": [
+                "Backlog",
+                "InProgress",
+                "Resolved"
+              ]
+            },
+            {
+              "type": "datetime",
+              "name": "createdAt",
+              "keys": []
+            },
+            {
+              "type": "datetime",
+              "name": "updatedAt",
+              "keys": []
+            }
+          ]
+        },
+        "relationships": [
+          {
+            "from": "ISSUE",
+            "fromCardinality": "||",
+            "toCardinality": "o{",
+            "to": "COMMENT",
+            "label": "contains"
+          },
+          {
+            "from": "USER",
+            "fromCardinality": "||",
+            "toCardinality": "o{",
+            "to": "ISSUE",
+            "label": "reports"
+          }
+        ]
+      },
+      "source": {
+        "file": "domain.md"
+      }
+    },
+    {
+      "id": "model:User",
+      "kind": "model",
+      "name": "User",
+      "fingerprint": "6f3b31c482757241637efd879468b4011abc8dfcf5ab9fb0eceb7538a01074a7",
+      "details": {
+        "entity": {
+          "name": "USER",
+          "role": "table",
+          "attributes": [
+            {
+              "type": "uuid",
+              "name": "id",
+              "keys": [
+                "PK"
+              ]
+            },
+            {
+              "type": "email",
+              "name": "email",
+              "keys": [
+                "UK"
+              ]
+            },
+            {
+              "type": "string",
+              "name": "displayName",
+              "keys": []
+            },
+            {
+              "type": "datetime",
+              "name": "createdAt",
+              "keys": []
+            }
+          ]
+        },
+        "relationships": [
+          {
+            "from": "USER",
+            "fromCardinality": "||",
+            "toCardinality": "o{",
+            "to": "COMMENT",
+            "label": "writes"
+          },
+          {
+            "from": "USER",
+            "fromCardinality": "||",
+            "toCardinality": "o{",
+            "to": "ISSUE",
+            "label": "reports"
+          }
+        ]
+      },
+      "source": {
+        "file": "domain.md"
+      }
+    },
+    {
+      "id": "operation:addComment",
+      "kind": "operation",
+      "name": "addComment",
+      "fingerprint": "28db4df9bd98663d16d05083bbf92f121c0557ddb2f17c3139754a0df5ef040e",
+      "details": {
+        "client": "Client",
+        "server": "API",
+        "method": "POST",
+        "path": "/issues/{issueId}/comments",
+        "operationId": "addComment",
+        "requestModel": "COMMENT",
+        "responses": [
+          {
+            "status": "201",
+            "model": "COMMENT"
+          },
+          {
+            "status": "400"
+          },
+          {
+            "status": "404"
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "issueId",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "source": {
+        "file": "api.md"
+      }
+    },
+    {
+      "id": "operation:createIssue",
+      "kind": "operation",
+      "name": "createIssue",
+      "fingerprint": "a0cef6d46814fbcb54a86a98366e55e107ad7043c070fdc7de00a3af25029767",
+      "details": {
+        "client": "Client",
+        "server": "API",
+        "method": "POST",
+        "path": "/issues",
+        "operationId": "createIssue",
+        "requestModel": "ISSUE",
+        "responses": [
+          {
+            "status": "201",
+            "model": "ISSUE"
+          },
+          {
+            "status": "400"
+          }
+        ],
+        "parameters": []
+      },
+      "source": {
+        "file": "api.md"
+      }
+    },
+    {
+      "id": "operation:getIssue",
+      "kind": "operation",
+      "name": "getIssue",
+      "fingerprint": "941467088ddcb3fe304ecb91f3ba5477c3d6957a0092fb70b9395511ebd6498d",
+      "details": {
+        "client": "Client",
+        "server": "API",
+        "method": "GET",
+        "path": "/issues/{issueId}",
+        "operationId": "getIssue",
+        "responses": [
+          {
+            "status": "200",
+            "model": "ISSUE"
+          },
+          {
+            "status": "404"
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "issueId",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "source": {
+        "file": "api.md"
+      }
+    },
+    {
+      "id": "operation:updateIssue",
+      "kind": "operation",
+      "name": "updateIssue",
+      "fingerprint": "c4a2dfb537c6d8a24820854cda7782aa2284a61190f43ce21b91c756375eb48c",
+      "details": {
+        "client": "Client",
+        "server": "API",
+        "method": "PUT",
+        "path": "/issues/{issueId}",
+        "operationId": "updateIssue",
+        "requestModel": "ISSUE",
+        "responses": [
+          {
+            "status": "200",
+            "model": "ISSUE"
+          },
+          {
+            "status": "400"
+          },
+          {
+            "status": "404"
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "issueId",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "source": {
+        "file": "api.md"
+      }
+    },
+    {
+      "id": "scenario:IssueLifecycle:blocksEmptyResolution",
+      "kind": "scenario",
+      "name": "blocksEmptyResolution",
+      "fingerprint": "233b8ab1d016abd01b0dddbf6a6e498c2a018cf1161381446ec5d8337ac54090",
+      "details": {
+        "name": "blocksEmptyResolution",
+        "from": "InProgress",
+        "event": "resolve",
+        "expected": "!invalid",
+        "context": {
+          "resolution": ""
+        }
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "scenario:IssueLifecycle:resolvesIssue",
+      "kind": "scenario",
+      "name": "resolvesIssue",
+      "fingerprint": "ee45ada6f9f0656a707473cbf71a7e31a59078ae9ebc6590618ab4a0a09559cc",
+      "details": {
+        "name": "resolvesIssue",
+        "from": "InProgress",
+        "event": "resolve",
+        "expected": "Resolved",
+        "context": {
+          "resolution": "fixed"
+        },
+        "expectedContext": {
+          "reporterNotified": true
+        }
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "scenario:IssueLifecycle:startsWork",
+      "kind": "scenario",
+      "name": "startsWork",
+      "fingerprint": "aa4100098542405133789f1648b4519487b3ddd6bfc940982f295190347d28fa",
+      "details": {
+        "name": "startsWork",
+        "from": "Backlog",
+        "event": "start",
+        "expected": "InProgress",
+        "context": {
+          "owner": "alex"
+        },
+        "expectedContext": {
+          "assigned": true
+        }
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "transition:IssueLifecycle:Backlog:start",
+      "kind": "transition",
+      "name": "Backlog --start--> InProgress",
+      "fingerprint": "f1d60ec51398fccc216edb4ea05976f3a161f34b906764852b365a19a4bad758",
+      "details": {
+        "from": "Backlog",
+        "event": "start",
+        "to": "InProgress",
+        "effect": "assignOwner"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "transition:IssueLifecycle:InProgress:resolve",
+      "kind": "transition",
+      "name": "InProgress --resolve--> Resolved",
+      "fingerprint": "d158c80c2758ffb4c9fc41d1896273aad876aa91f638a9bdb40121789af79d1e",
+      "details": {
+        "from": "InProgress",
+        "event": "resolve",
+        "to": "Resolved",
+        "guard": "resolutionProvided",
+        "effect": "notifyReporter"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "transition:IssueLifecycle:Resolved:reopen",
+      "kind": "transition",
+      "name": "Resolved --reopen--> InProgress",
+      "fingerprint": "a35f8a08b07cbc3f3d8059af0a9af1c098127a5566bf2fa472e3e6c47ebd7810",
+      "details": {
+        "from": "Resolved",
+        "event": "reopen",
+        "to": "InProgress",
+        "effect": "notifyAssignee"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "machine:IssueLifecycle",
+      "to": "model:Issue",
+      "relation": "state:status"
+    },
+    {
+      "from": "machine:IssueLifecycle",
+      "to": "scenario:IssueLifecycle:blocksEmptyResolution",
+      "relation": "scenario"
+    },
+    {
+      "from": "machine:IssueLifecycle",
+      "to": "scenario:IssueLifecycle:resolvesIssue",
+      "relation": "scenario"
+    },
+    {
+      "from": "machine:IssueLifecycle",
+      "to": "scenario:IssueLifecycle:startsWork",
+      "relation": "scenario"
+    },
+    {
+      "from": "machine:IssueLifecycle",
+      "to": "transition:IssueLifecycle:Backlog:start",
+      "relation": "transition"
+    },
+    {
+      "from": "machine:IssueLifecycle",
+      "to": "transition:IssueLifecycle:InProgress:resolve",
+      "relation": "transition"
+    },
+    {
+      "from": "machine:IssueLifecycle",
+      "to": "transition:IssueLifecycle:Resolved:reopen",
+      "relation": "transition"
+    },
+    {
+      "from": "operation:addComment",
+      "to": "model:Comment",
+      "relation": "request"
+    },
+    {
+      "from": "operation:addComment",
+      "to": "model:Comment",
+      "relation": "response:201"
+    },
+    {
+      "from": "operation:createIssue",
+      "to": "model:Issue",
+      "relation": "request"
+    },
+    {
+      "from": "operation:createIssue",
+      "to": "model:Issue",
+      "relation": "response:201"
+    },
+    {
+      "from": "operation:getIssue",
+      "to": "model:Issue",
+      "relation": "response:200"
+    },
+    {
+      "from": "operation:updateIssue",
+      "to": "model:Issue",
+      "relation": "request"
+    },
+    {
+      "from": "operation:updateIssue",
+      "to": "model:Issue",
+      "relation": "response:200"
+    },
+    {
+      "from": "scenario:IssueLifecycle:blocksEmptyResolution",
+      "to": "transition:IssueLifecycle:InProgress:resolve",
+      "relation": "exercises"
+    },
+    {
+      "from": "scenario:IssueLifecycle:resolvesIssue",
+      "to": "transition:IssueLifecycle:InProgress:resolve",
+      "relation": "exercises"
+    },
+    {
+      "from": "scenario:IssueLifecycle:startsWork",
+      "to": "transition:IssueLifecycle:Backlog:start",
+      "relation": "exercises"
+    },
+    {
+      "from": "transition:IssueLifecycle:Backlog:start",
+      "to": "effect:IssueLifecycle:assignOwner",
+      "relation": "effect"
+    },
+    {
+      "from": "transition:IssueLifecycle:InProgress:resolve",
+      "to": "effect:IssueLifecycle:notifyReporter",
+      "relation": "effect"
+    },
+    {
+      "from": "transition:IssueLifecycle:InProgress:resolve",
+      "to": "guard:IssueLifecycle:resolutionProvided",
+      "relation": "guard"
+    },
+    {
+      "from": "transition:IssueLifecycle:Resolved:reopen",
+      "to": "effect:IssueLifecycle:notifyAssignee",
+      "relation": "effect"
+    }
+  ]
+}

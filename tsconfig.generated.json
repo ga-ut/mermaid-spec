@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "examples/product/generated/*.ts",
+    "examples/issue-tracker/generated/*.ts",
+    "examples/full-stack/generated/*.ts"
+  ]
+}

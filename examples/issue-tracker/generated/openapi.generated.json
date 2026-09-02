@@ -1,0 +1,261 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Generated API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/issues": {
+      "post": {
+        "operationId": "createIssue",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Issue"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "HTTP 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Issue"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "HTTP 400"
+          }
+        }
+      }
+    },
+    "/issues/{issueId}": {
+      "get": {
+        "operationId": "getIssue",
+        "parameters": [
+          {
+            "name": "issueId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "HTTP 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Issue"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "HTTP 404"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateIssue",
+        "parameters": [
+          {
+            "name": "issueId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Issue"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "HTTP 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Issue"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "HTTP 400"
+          },
+          "404": {
+            "description": "HTTP 404"
+          }
+        }
+      }
+    },
+    "/issues/{issueId}/comments": {
+      "post": {
+        "operationId": "addComment",
+        "parameters": [
+          {
+            "name": "issueId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "HTTP 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "HTTP 400"
+          },
+          "404": {
+            "description": "HTTP 404"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "displayName",
+          "createdAt"
+        ]
+      },
+      "Issue": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Backlog",
+              "InProgress",
+              "Resolved"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "title",
+          "description",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Comment": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "issueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "body": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "issueId",
+          "userId",
+          "body",
+          "createdAt"
+        ]
+      }
+    }
+  }
+}

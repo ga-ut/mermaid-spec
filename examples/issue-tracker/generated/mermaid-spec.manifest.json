@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "compiler": {
+    "name": "mermaid-spec",
+    "version": "1.0.0"
+  },
+  "sources": [
+    {
+      "file": "api.md",
+      "sha256": "cea674435c79a58b6a15761ae6c4a1ce0f4abfe61c8f59bf68c32428ae2ca308"
+    },
+    {
+      "file": "domain.md",
+      "sha256": "83d9bd5c2ef82497c5f1810176e3c811e1b50fd4b505acc241fffb36f0e14231"
+    },
+    {
+      "file": "lifecycle.md",
+      "sha256": "efc202297b9e6a72547ab052cc400edde5a9f0d6eac2ddc96bb0d3d93eb470a1"
+    }
+  ],
+  "models": [
+    "USER",
+    "ISSUE",
+    "COMMENT"
+  ],
+  "machines": [
+    "IssueLifecycle"
+  ],
+  "operations": [
+    "createIssue",
+    "getIssue",
+    "updateIssue",
+    "addComment"
+  ],
+  "artifacts": {
+    "models.generated.ts": {
+      "sha256": "f2ec1f06945d2ad3180f05c65c58ae611e717fadccdeb3e68cdfe84ca4d44d8e"
+    },
+    "models.schema.json": {
+      "sha256": "9fbcddeb25bff3453105d5311e3637bddf101e35d4e4d55e0e5c93081e062982"
+    },
+    "schema.generated.sql": {
+      "sha256": "f80e4d78c5c6bfa4ad30c60314c2f6bee10844b15a7eb3ccc94c0e75b36b494c"
+    },
+    "openapi.generated.json": {
+      "sha256": "fe1b5e4a73a1607bfc094b442fab91267fc4830aa6911b4b79145b552dff8014"
+    },
+    "api.generated.ts": {
+      "sha256": "3834410b1883791474c6ff5c81c6800287a4ed677c6b35a43530178134821df6"
+    },
+    "api.generated.js": {
+      "sha256": "5af4b49475532e4354a51e80b577eda25928cba0b6205b80b3464443053d7610"
+    },
+    "issue-lifecycle.machine.generated.ts": {
+      "sha256": "73efe6331ef08b46814dc0070dab7b8455143aab9eb38cd29361b93dd467ac2d"
+    },
+    "issue-lifecycle.machine.generated.js": {
+      "sha256": "827956430ef88cfbc06e5d05b5c1a09afee04fc6e995d07c3bdfa135a100d672"
+    },
+    "contract-graph.generated.json": {
+      "sha256": "4e62b66f10edee203725cb650cde9727af0382331de7431075548caa50fa9e19"
+    }
+  }
+}

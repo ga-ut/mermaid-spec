@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "User": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "createdAt"
+      ]
+    },
+    "OauthAccount": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "accessToken": {
+          "type": "string"
+        },
+        "refreshToken": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "provider",
+        "accessToken",
+        "refreshToken",
+        "expiresAt"
+      ]
+    },
+    "OauthCallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "state"
+      ]
+    }
+  }
+}

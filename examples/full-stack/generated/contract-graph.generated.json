@@ -1,0 +1,792 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "id": "effect:TaskLifecycle:markCompleted",
+      "kind": "effect",
+      "name": "markCompleted",
+      "fingerprint": "dfc8a90bff6450a54ba41cb05a5ddd3f313548964609133c7c8ee0d2f3e87f0e",
+      "details": {
+        "name": "markCompleted"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "effect:TaskLifecycle:markReopened",
+      "kind": "effect",
+      "name": "markReopened",
+      "fingerprint": "c335370266a237c782ad17540e9244be60b3513a5834f9f78138a012596f7c02",
+      "details": {
+        "name": "markReopened"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "effect:TaskLifecycle:markStarted",
+      "kind": "effect",
+      "name": "markStarted",
+      "fingerprint": "19bb47454f962afbdaca082cc44dce500368337de084de8b319565c92fc9d023",
+      "details": {
+        "name": "markStarted"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "guard:TaskLifecycle:workConfirmed",
+      "kind": "guard",
+      "name": "workConfirmed",
+      "fingerprint": "e9781366976b20b2e9c7c88160f3c46e3830d9e1ab00bb48eb7dad383e37d9fe",
+      "details": {
+        "name": "workConfirmed"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "machine:TaskLifecycle",
+      "kind": "machine",
+      "name": "TaskLifecycle",
+      "fingerprint": "8a638a515081aaea73355071865c98b00b0aead09087cd0e01856fc8da5ef097",
+      "details": {
+        "initial": "Backlog",
+        "states": [
+          "Backlog",
+          "Done",
+          "InProgress"
+        ],
+        "terminal": [],
+        "binding": {
+          "model": "TASK",
+          "field": "status"
+        }
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "model:ApiError",
+      "kind": "model",
+      "name": "ApiError",
+      "fingerprint": "3ee788d4c0e7c36660b4a1d014e522b04beae925dad2634eff46e77636778b47",
+      "details": {
+        "entity": {
+          "name": "API_ERROR",
+          "role": "schema",
+          "attributes": [
+            {
+              "type": "string",
+              "name": "code",
+              "keys": [],
+              "minLength": 1
+            },
+            {
+              "type": "string",
+              "name": "message",
+              "keys": [],
+              "minLength": 1
+            }
+          ]
+        },
+        "relationships": []
+      },
+      "source": {
+        "file": "domain.md"
+      }
+    },
+    {
+      "id": "model:CreateTaskRequest",
+      "kind": "model",
+      "name": "CreateTaskRequest",
+      "fingerprint": "41570535c219e43c24cd13870c9e5d490ad3c2fb7351186e88e557fd9b231be9",
+      "details": {
+        "entity": {
+          "name": "CREATE_TASK_REQUEST",
+          "role": "schema",
+          "attributes": [
+            {
+              "type": "string",
+              "name": "title",
+              "keys": [],
+              "minLength": 2,
+              "maxLength": 80
+            },
+            {
+              "type": "text",
+              "name": "description",
+              "keys": [],
+              "maxLength": 400
+            }
+          ]
+        },
+        "relationships": []
+      },
+      "source": {
+        "file": "domain.md"
+      }
+    },
+    {
+      "id": "model:Task",
+      "kind": "model",
+      "name": "Task",
+      "fingerprint": "05bf236710120e6445326dd8f937c95640c2fa1a56fa9353d64a47c8cf4d7adb",
+      "details": {
+        "entity": {
+          "name": "TASK",
+          "role": "table",
+          "attributes": [
+            {
+              "type": "uuid",
+              "name": "id",
+              "keys": [
+                "PK"
+              ]
+            },
+            {
+              "type": "string",
+              "name": "title",
+              "keys": [],
+              "minLength": 2,
+              "maxLength": 80
+            },
+            {
+              "type": "text",
+              "name": "description",
+              "keys": [],
+              "maxLength": 400
+            },
+            {
+              "type": "string",
+              "name": "status",
+              "keys": [],
+              "enum": [
+                "Backlog",
+                "InProgress",
+                "Done"
+              ]
+            },
+            {
+              "type": "string",
+              "name": "assignee",
+              "keys": [],
+              "optional": true
+            },
+            {
+              "type": "int",
+              "name": "version",
+              "keys": [],
+              "minimum": 1
+            },
+            {
+              "type": "datetime",
+              "name": "createdAt",
+              "keys": []
+            },
+            {
+              "type": "datetime",
+              "name": "updatedAt",
+              "keys": []
+            }
+          ]
+        },
+        "relationships": []
+      },
+      "source": {
+        "file": "domain.md"
+      }
+    },
+    {
+      "id": "model:TaskEventRequest",
+      "kind": "model",
+      "name": "TaskEventRequest",
+      "fingerprint": "92d60993cc90ceb946b8919e5baef54c9dc5973e0e80a3f641c6376b23ff2793",
+      "details": {
+        "entity": {
+          "name": "TASK_EVENT_REQUEST",
+          "role": "schema",
+          "attributes": [
+            {
+              "type": "string",
+              "name": "event",
+              "keys": [],
+              "enum": [
+                "start",
+                "complete",
+                "reopen"
+              ]
+            },
+            {
+              "type": "boolean",
+              "name": "confirmed",
+              "keys": [],
+              "optional": true,
+              "default": false
+            }
+          ]
+        },
+        "relationships": []
+      },
+      "source": {
+        "file": "domain.md"
+      }
+    },
+    {
+      "id": "model:TaskList",
+      "kind": "model",
+      "name": "TaskList",
+      "fingerprint": "3bfbedac6820a5f7c0db898fad6ca8424273825b8f5239f414c1afe4c9e22399",
+      "details": {
+        "entity": {
+          "name": "TASK_LIST",
+          "role": "schema",
+          "attributes": [
+            {
+              "type": "TASK",
+              "name": "items",
+              "keys": [],
+              "array": true,
+              "maxItems": 50
+            },
+            {
+              "type": "string",
+              "name": "nextCursor",
+              "keys": [],
+              "optional": true,
+              "nullable": true
+            }
+          ]
+        },
+        "relationships": []
+      },
+      "source": {
+        "file": "domain.md"
+      }
+    },
+    {
+      "id": "operation:createTask",
+      "kind": "operation",
+      "name": "createTask",
+      "fingerprint": "649674a214559e263fce251332195b9522bb5d8db0a6f4ced673113771bdb7f5",
+      "details": {
+        "client": "Browser",
+        "server": "API",
+        "method": "POST",
+        "path": "/tasks",
+        "operationId": "createTask",
+        "requestModel": "CREATE_TASK_REQUEST",
+        "responses": [
+          {
+            "status": "201",
+            "model": "TASK"
+          },
+          {
+            "status": "400",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "401",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "409",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "500",
+            "model": "API_ERROR"
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-actor-id",
+            "type": "string",
+            "required": true,
+            "minLength": 1
+          }
+        ],
+        "access": {
+          "scheme": "apiKey",
+          "in": "header",
+          "name": "x-actor-id"
+        },
+        "errors": [
+          {
+            "status": "400",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "401",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "409",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "500",
+            "model": "API_ERROR"
+          }
+        ]
+      },
+      "source": {
+        "file": "api.md"
+      }
+    },
+    {
+      "id": "operation:listTasks",
+      "kind": "operation",
+      "name": "listTasks",
+      "fingerprint": "c831f675b2c1337f39b0a5c75214255b3aa871e637bd92e6504663870908cfca",
+      "details": {
+        "client": "Browser",
+        "server": "API",
+        "method": "GET",
+        "path": "/tasks",
+        "operationId": "listTasks",
+        "responses": [
+          {
+            "status": "200",
+            "model": "TASK_LIST"
+          },
+          {
+            "status": "401",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "500",
+            "model": "API_ERROR"
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "int",
+            "required": false,
+            "minimum": 1,
+            "maximum": 50
+          },
+          {
+            "in": "header",
+            "name": "x-actor-id",
+            "type": "string",
+            "required": true,
+            "minLength": 1
+          }
+        ],
+        "access": {
+          "scheme": "apiKey",
+          "in": "header",
+          "name": "x-actor-id"
+        },
+        "errors": [
+          {
+            "status": "401",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "500",
+            "model": "API_ERROR"
+          }
+        ],
+        "pagination": {
+          "cursor": "cursor",
+          "limit": "limit",
+          "response": "nextCursor"
+        }
+      },
+      "source": {
+        "file": "api.md"
+      }
+    },
+    {
+      "id": "operation:transitionTask",
+      "kind": "operation",
+      "name": "transitionTask",
+      "fingerprint": "abad38cc874f3c6a51c4af354c345af5dc829ae5642737475393de76b0597891",
+      "details": {
+        "client": "Browser",
+        "server": "API",
+        "method": "POST",
+        "path": "/tasks/{task-id}/events",
+        "operationId": "transitionTask",
+        "requestModel": "TASK_EVENT_REQUEST",
+        "responses": [
+          {
+            "status": "200",
+            "model": "TASK"
+          },
+          {
+            "status": "400",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "401",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "404",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "409",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "500",
+            "model": "API_ERROR"
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "task-id",
+            "type": "uuid",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "x-actor-id",
+            "type": "string",
+            "required": true,
+            "minLength": 1
+          }
+        ],
+        "access": {
+          "scheme": "apiKey",
+          "in": "header",
+          "name": "x-actor-id"
+        },
+        "errors": [
+          {
+            "status": "400",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "401",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "404",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "409",
+            "model": "API_ERROR"
+          },
+          {
+            "status": "500",
+            "model": "API_ERROR"
+          }
+        ]
+      },
+      "source": {
+        "file": "api.md"
+      }
+    },
+    {
+      "id": "scenario:TaskLifecycle:blocksUnconfirmed",
+      "kind": "scenario",
+      "name": "blocksUnconfirmed",
+      "fingerprint": "c7c0d1d8b905b0dd36669c6295396bb9f563e808447ff2f9d5775623af887880",
+      "details": {
+        "name": "blocksUnconfirmed",
+        "from": "InProgress",
+        "event": "complete",
+        "expected": "!invalid",
+        "context": {
+          "confirmed": false
+        }
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "scenario:TaskLifecycle:completes",
+      "kind": "scenario",
+      "name": "completes",
+      "fingerprint": "610355f9444bd63b45e1946010f4bc898f170ce1b19349fcc63b637405cd5272",
+      "details": {
+        "name": "completes",
+        "from": "InProgress",
+        "event": "complete",
+        "expected": "Done",
+        "context": {
+          "confirmed": true
+        },
+        "expectedContext": {
+          "completed": true
+        }
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "scenario:TaskLifecycle:reopens",
+      "kind": "scenario",
+      "name": "reopens",
+      "fingerprint": "5b2d0d2c07de09f3296d386a502fa396d7884d2ecaa7c7e0faf91b3259c24900",
+      "details": {
+        "name": "reopens",
+        "from": "Done",
+        "event": "reopen",
+        "expected": "InProgress",
+        "context": {},
+        "expectedContext": {
+          "reopened": true
+        }
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "scenario:TaskLifecycle:starts",
+      "kind": "scenario",
+      "name": "starts",
+      "fingerprint": "25227b403596c295fd157f86972f90069a59e457ae6691c4208568ac7720f86a",
+      "details": {
+        "name": "starts",
+        "from": "Backlog",
+        "event": "start",
+        "expected": "InProgress",
+        "context": {},
+        "expectedContext": {
+          "started": true
+        }
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "transition:TaskLifecycle:Backlog:start",
+      "kind": "transition",
+      "name": "Backlog --start--> InProgress",
+      "fingerprint": "02e70da4f7f93a8a2a667650470731944bfaa2f004111007d5f8ae9bdef8a48e",
+      "details": {
+        "from": "Backlog",
+        "event": "start",
+        "to": "InProgress",
+        "effect": "markStarted"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "transition:TaskLifecycle:Done:reopen",
+      "kind": "transition",
+      "name": "Done --reopen--> InProgress",
+      "fingerprint": "a6aea78bf1ac0d540ea5915f1fd021c6ac6d02efd1318975ea59446224f64067",
+      "details": {
+        "from": "Done",
+        "event": "reopen",
+        "to": "InProgress",
+        "effect": "markReopened"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    },
+    {
+      "id": "transition:TaskLifecycle:InProgress:complete",
+      "kind": "transition",
+      "name": "InProgress --complete--> Done",
+      "fingerprint": "6d312b48b4931b2c5dd88267480fb36ffa8ab741975baa5996a05681c5e82035",
+      "details": {
+        "from": "InProgress",
+        "event": "complete",
+        "to": "Done",
+        "guard": "workConfirmed",
+        "effect": "markCompleted"
+      },
+      "source": {
+        "file": "lifecycle.md"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "machine:TaskLifecycle",
+      "to": "model:Task",
+      "relation": "state:status"
+    },
+    {
+      "from": "machine:TaskLifecycle",
+      "to": "scenario:TaskLifecycle:blocksUnconfirmed",
+      "relation": "scenario"
+    },
+    {
+      "from": "machine:TaskLifecycle",
+      "to": "scenario:TaskLifecycle:completes",
+      "relation": "scenario"
+    },
+    {
+      "from": "machine:TaskLifecycle",
+      "to": "scenario:TaskLifecycle:reopens",
+      "relation": "scenario"
+    },
+    {
+      "from": "machine:TaskLifecycle",
+      "to": "scenario:TaskLifecycle:starts",
+      "relation": "scenario"
+    },
+    {
+      "from": "machine:TaskLifecycle",
+      "to": "transition:TaskLifecycle:Backlog:start",
+      "relation": "transition"
+    },
+    {
+      "from": "machine:TaskLifecycle",
+      "to": "transition:TaskLifecycle:Done:reopen",
+      "relation": "transition"
+    },
+    {
+      "from": "machine:TaskLifecycle",
+      "to": "transition:TaskLifecycle:InProgress:complete",
+      "relation": "transition"
+    },
+    {
+      "from": "model:TaskList",
+      "to": "model:Task",
+      "relation": "field:items"
+    },
+    {
+      "from": "operation:createTask",
+      "to": "model:ApiError",
+      "relation": "response:400"
+    },
+    {
+      "from": "operation:createTask",
+      "to": "model:ApiError",
+      "relation": "response:401"
+    },
+    {
+      "from": "operation:createTask",
+      "to": "model:ApiError",
+      "relation": "response:409"
+    },
+    {
+      "from": "operation:createTask",
+      "to": "model:ApiError",
+      "relation": "response:500"
+    },
+    {
+      "from": "operation:createTask",
+      "to": "model:CreateTaskRequest",
+      "relation": "request"
+    },
+    {
+      "from": "operation:createTask",
+      "to": "model:Task",
+      "relation": "response:201"
+    },
+    {
+      "from": "operation:listTasks",
+      "to": "model:ApiError",
+      "relation": "response:401"
+    },
+    {
+      "from": "operation:listTasks",
+      "to": "model:ApiError",
+      "relation": "response:500"
+    },
+    {
+      "from": "operation:listTasks",
+      "to": "model:TaskList",
+      "relation": "response:200"
+    },
+    {
+      "from": "operation:transitionTask",
+      "to": "model:ApiError",
+      "relation": "response:400"
+    },
+    {
+      "from": "operation:transitionTask",
+      "to": "model:ApiError",
+      "relation": "response:401"
+    },
+    {
+      "from": "operation:transitionTask",
+      "to": "model:ApiError",
+      "relation": "response:404"
+    },
+    {
+      "from": "operation:transitionTask",
+      "to": "model:ApiError",
+      "relation": "response:409"
+    },
+    {
+      "from": "operation:transitionTask",
+      "to": "model:ApiError",
+      "relation": "response:500"
+    },
+    {
+      "from": "operation:transitionTask",
+      "to": "model:TaskEventRequest",
+      "relation": "request"
+    },
+    {
+      "from": "operation:transitionTask",
+      "to": "model:Task",
+      "relation": "response:200"
+    },
+    {
+      "from": "scenario:TaskLifecycle:blocksUnconfirmed",
+      "to": "transition:TaskLifecycle:InProgress:complete",
+      "relation": "exercises"
+    },
+    {
+      "from": "scenario:TaskLifecycle:completes",
+      "to": "transition:TaskLifecycle:InProgress:complete",
+      "relation": "exercises"
+    },
+    {
+      "from": "scenario:TaskLifecycle:reopens",
+      "to": "transition:TaskLifecycle:Done:reopen",
+      "relation": "exercises"
+    },
+    {
+      "from": "scenario:TaskLifecycle:starts",
+      "to": "transition:TaskLifecycle:Backlog:start",
+      "relation": "exercises"
+    },
+    {
+      "from": "transition:TaskLifecycle:Backlog:start",
+      "to": "effect:TaskLifecycle:markStarted",
+      "relation": "effect"
+    },
+    {
+      "from": "transition:TaskLifecycle:Done:reopen",
+      "to": "effect:TaskLifecycle:markReopened",
+      "relation": "effect"
+    },
+    {
+      "from": "transition:TaskLifecycle:InProgress:complete",
+      "to": "effect:TaskLifecycle:markCompleted",
+      "relation": "effect"
+    },
+    {
+      "from": "transition:TaskLifecycle:InProgress:complete",
+      "to": "guard:TaskLifecycle:workConfirmed",
+      "relation": "guard"
+    }
+  ]
+}

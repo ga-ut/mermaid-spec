@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "User": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "displayName",
+        "createdAt"
+      ]
+    },
+    "Issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Backlog",
+            "InProgress",
+            "Resolved"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "title",
+        "description",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Comment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "issueId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "body": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "issueId",
+        "userId",
+        "body",
+        "createdAt"
+      ]
+    }
+  }
+}

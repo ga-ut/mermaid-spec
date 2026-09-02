@@ -1,0 +1,414 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Generated API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/tasks": {
+      "get": {
+        "operationId": "listTasks",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          },
+          {
+            "name": "x-actor-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKey_header_x_actor_id": []
+          }
+        ],
+        "x-mermaid-spec-pagination": {
+          "cursor": "cursor",
+          "limit": "limit",
+          "response": "nextCursor"
+        },
+        "responses": {
+          "200": {
+            "description": "HTTP 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Contract error 401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Contract error 500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTask",
+        "parameters": [
+          {
+            "name": "x-actor-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey_header_x_actor_id": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "HTTP 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract error 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Contract error 401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Contract error 409",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Contract error 500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{task-id}/events": {
+      "post": {
+        "operationId": "transitionTask",
+        "parameters": [
+          {
+            "name": "task-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-actor-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskEventRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey_header_x_actor_id": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "HTTP 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract error 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Contract error 401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contract error 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Contract error 409",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Contract error 500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Task": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 400
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Backlog",
+              "InProgress",
+              "Done"
+            ]
+          },
+          "assignee": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "status",
+          "version",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateTaskRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 400
+          }
+        },
+        "required": [
+          "title",
+          "description"
+        ]
+      },
+      "TaskEventRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "event": {
+            "type": "string",
+            "enum": [
+              "start",
+              "complete",
+              "reopen"
+            ]
+          },
+          "confirmed": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "event"
+        ]
+      },
+      "TaskList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Task"
+            },
+            "maxItems": 50
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "ApiError": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "ApiKey_header_x_actor_id": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-actor-id"
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "name": "mermaid-spec",
+  "version": "1.0.0",
+  "packageManager": "bun@1.3.14",
+  "description": "Trace Mermaid specifications to deterministic contracts, implementations, and tests.",
+  "author": "GA-UT contributors",
+  "keywords": [
+    "mermaid",
+    "codegen",
+    "openapi",
+    "state-machine",
+    "spec-driven-development",
+    "traceability",
+    "json-schema",
+    "postgresql"
+  ],
+  "homepage": "https://github.com/ga-ut/mermaid-spec#readme",
+  "bugs": "https://github.com/ga-ut/mermaid-spec/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ga-ut/mermaid-spec.git"
+  },
+  "files": [
+    "src",
+    "examples",
+    "docs",
+    "README.md",
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "LICENSE"
+  ],
+  "type": "module",
+  "bin": {
+    "mermaid-spec": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./runtime": "./src/runtime.js",
+    "./http": "./src/http-runtime.js"
+  },
+  "scripts": {
+    "test": "bun test",
+    "test:coverage": "bun test --coverage",
+    "check": "bun ./src/cli.js check ./examples/order.md",
+    "emit": "bun ./src/cli.js emit ./examples/order.md",
+    "spec:test": "bun ./src/cli.js test ./examples/order.md",
+    "build:product": "bun ./src/cli.js build ./examples/product/specs --out ./examples/product/generated",
+    "example:product": "bun run build:product && bun ./examples/product/app.js",
+    "build:issue-tracker": "bun ./src/cli.js build ./examples/issue-tracker/specs --out ./examples/issue-tracker/generated",
+    "example:issue-tracker": "bun run build:issue-tracker && bun ./examples/issue-tracker/app.js",
+    "scenario:issue-tracker": "bun ./src/cli.js test ./examples/issue-tracker/specs --handlers ./examples/issue-tracker/scenario-handlers.js",
+    "build:full-stack": "bun ./src/cli.js build ./examples/full-stack/specs --out ./examples/full-stack/generated",
+    "example:full-stack": "bun run build:full-stack && bun ./examples/full-stack/demo.js",
+    "example:full-stack:serve": "bun run build:full-stack && bun ./examples/full-stack/server.js",
+    "scenario:full-stack": "bun ./src/cli.js test ./examples/full-stack/specs --handlers ./examples/full-stack/backend/lifecycle.js",
+    "verify:generated": "bun ./src/cli.js verify ./examples/product/specs --out ./examples/product/generated",
+    "verify:issue-tracker": "bun ./src/cli.js verify ./examples/issue-tracker/specs --out ./examples/issue-tracker/generated",
+    "verify:full-stack": "bun ./src/cli.js verify ./examples/full-stack/specs --out ./examples/full-stack/generated --links ./examples/full-stack/mermaid-spec.links.json",
+    "verify:compatibility": "bun ./src/cli.js compatibility ./examples/issue-tracker/specs --baseline ./examples/issue-tracker/generated/contract-graph.generated.json && bun ./src/cli.js migration ./examples/issue-tracker/specs --baseline ./examples/issue-tracker/generated/contract-graph.generated.json",
+    "typecheck:generated": "bunx --bun tsc -p tsconfig.generated.json",
+    "lint:openapi": "bunx --bun redocly lint --config redocly.yaml ./examples/product/generated/openapi.generated.json ./examples/issue-tracker/generated/openapi.generated.json ./examples/full-stack/generated/openapi.generated.json",
+    "package:check": "bun ./scripts/smoke-package.js",
+    "verify": "bun run test:coverage && bun run example:product && bun run example:issue-tracker && bun run example:full-stack && bun run scenario:issue-tracker && bun run scenario:full-stack && bun run verify:generated && bun run verify:issue-tracker && bun run verify:full-stack && bun run verify:compatibility && bun run typecheck:generated && bun run lint:openapi && bun run package:check",
+    "release:check": "bun run verify",
+    "prepublishOnly": "bun run verify"
+  },
+  "engines": {
+    "bun": ">=1.3.14"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@redocly/cli": "2.49.0",
+    "typescript": "7.0.2"
+  }
+}

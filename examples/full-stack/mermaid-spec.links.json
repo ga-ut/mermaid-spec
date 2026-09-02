@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "links": [
+    { "contract": "model:ApiError", "role": "implementation", "path": "backend/service.js" },
+    { "contract": "model:ApiError", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "model:CreateTaskRequest", "role": "implementation", "path": "backend/service.js" },
+    { "contract": "model:CreateTaskRequest", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "model:Task", "role": "implementation", "path": "backend/store.js" },
+    { "contract": "model:Task", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "model:TaskEventRequest", "role": "implementation", "path": "backend/service.js" },
+    { "contract": "model:TaskEventRequest", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "model:TaskList", "role": "implementation", "path": "backend/store.js" },
+    { "contract": "model:TaskList", "role": "test", "path": "test/full-stack.test.js" },
+
+    { "contract": "operation:createTask", "role": "implementation", "path": "backend/service.js" },
+    { "contract": "operation:createTask", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "operation:createTask", "role": "consumer", "path": "frontend/app.js" },
+    { "contract": "operation:listTasks", "role": "implementation", "path": "backend/service.js" },
+    { "contract": "operation:listTasks", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "operation:listTasks", "role": "consumer", "path": "frontend/app.js" },
+    { "contract": "operation:transitionTask", "role": "implementation", "path": "backend/service.js" },
+    { "contract": "operation:transitionTask", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "operation:transitionTask", "role": "consumer", "path": "frontend/app.js" },
+
+    { "contract": "machine:TaskLifecycle", "role": "implementation", "path": "backend/service.js" },
+    { "contract": "machine:TaskLifecycle", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "transition:TaskLifecycle:Backlog:start", "role": "implementation", "path": "backend/service.js" },
+    { "contract": "transition:TaskLifecycle:Backlog:start", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "transition:TaskLifecycle:InProgress:complete", "role": "implementation", "path": "backend/service.js" },
+    { "contract": "transition:TaskLifecycle:InProgress:complete", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "transition:TaskLifecycle:Done:reopen", "role": "implementation", "path": "backend/service.js" },
+    { "contract": "transition:TaskLifecycle:Done:reopen", "role": "test", "path": "test/full-stack.test.js" },
+
+    { "contract": "guard:TaskLifecycle:workConfirmed", "role": "implementation", "path": "backend/lifecycle.js" },
+    { "contract": "guard:TaskLifecycle:workConfirmed", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "effect:TaskLifecycle:markStarted", "role": "implementation", "path": "backend/lifecycle.js" },
+    { "contract": "effect:TaskLifecycle:markStarted", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "effect:TaskLifecycle:markCompleted", "role": "implementation", "path": "backend/lifecycle.js" },
+    { "contract": "effect:TaskLifecycle:markCompleted", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "effect:TaskLifecycle:markReopened", "role": "implementation", "path": "backend/lifecycle.js" },
+    { "contract": "effect:TaskLifecycle:markReopened", "role": "test", "path": "test/full-stack.test.js" },
+
+    { "contract": "scenario:TaskLifecycle:starts", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "scenario:TaskLifecycle:completes", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "scenario:TaskLifecycle:blocksUnconfirmed", "role": "test", "path": "test/full-stack.test.js" },
+    { "contract": "scenario:TaskLifecycle:reopens", "role": "test", "path": "test/full-stack.test.js" }
+  ],
+  "requirements": [
+    { "kind": "model", "roles": ["implementation", "test"] },
+    { "kind": "operation", "roles": ["implementation", "test", "consumer"] },
+    { "kind": "machine", "roles": ["implementation", "test"] },
+    { "kind": "transition", "roles": ["implementation", "test"] },
+    { "kind": "guard", "roles": ["implementation", "test"] },
+    { "kind": "effect", "roles": ["implementation", "test"] },
+    { "kind": "scenario", "roles": ["test"] }
+  ]
+}
